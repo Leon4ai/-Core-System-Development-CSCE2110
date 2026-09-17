@@ -103,11 +103,15 @@ bool WaitingListManager::saveToFile(const std::string& filename) const {
     if (!out.is_open()) {
         return false;
     }
-    // Walk every queue in FIFO order so reload rebuilds the same lines.
-    for (std::size_t i = 0; i < lists.size(); ++i) {
-        lists[i].queue.forEach([&out](const WaitRequest& req) {
+    for (std::size_t i = 0; i < lists.size(); i++) {
+        // Make a copy of the queue so we don't destroy the active waitlist
+        WaitQueue tempQueue = lists[i].queue;
+        WaitRequest req;
+        
+        // Dequeue one by one and write to file
+        while (tempQueue.dequeue(req)) {
             out << req.toFileString() << "\n";
-        });
+        }
     }
     return true;
 }
