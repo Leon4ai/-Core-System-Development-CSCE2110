@@ -1,6 +1,7 @@
 #ifndef RESERVATIONLIST_H
 #define RESERVATIONLIST_H
 #include "Reservation.h"
+#include <iostream>
 
 class ReservationList {
 private:
@@ -32,6 +33,12 @@ public:
     bool findById(int reservationId, Reservation& out) const;
     int findByStudentId(int studentId, Reservation* results, int maxResults) const;
     bool containsId(int reservationId) const;
+
+    bool hasConflict(
+    const std::string& resource,
+    const std::string& date) const;
+
+    void writeTo(std::ostream& out) const;
     
     // Status and Display
     bool isEmpty() const;
