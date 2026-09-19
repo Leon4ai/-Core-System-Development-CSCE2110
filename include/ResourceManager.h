@@ -22,6 +22,12 @@ public:
     void displayAllResources() const;
     void displayAvailableResources() const;
 
+    std::vector<Resource>& all() {
+    return resources;}
+const std::vector<Resource>& all() const {
+    return resources;
+}
+
     // helpers
     Resource* getResourceById(const std::string& id);
     bool resourceExists(const std::string& id) const;
