@@ -1,1 +1,5 @@
-
+# Sample inventory; replace these with your team's actual resources.
+R101,Study Room A,Study Room,1,0
+R102,Study Room B,Study Room,1,0
+L201,Dell Laptop,Laptop,1,0
+C301,TI-84 Calculator,Calculator,1,0
