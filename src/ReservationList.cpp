@@ -146,3 +146,26 @@ void ReservationList::displayAll() const {
     }
 }
 
+bool ReservationList::hasConflict(
+    const std::string& resource,
+    const std::string& date
+) const {
+    for (Node* current = head;
+         current != nullptr;
+         current = current->next) {
+        if (current->data.getResourceId() == resource &&
+            current->data.getDate() == date) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+void ReservationList::writeTo(std::ostream& out) const {
+    for (Node* current = head;
+         current != nullptr;
+         current = current->next) {
+        out << current->data.toFileString() << '\n';
+    }
+}
