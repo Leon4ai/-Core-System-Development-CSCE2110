@@ -3,6 +3,8 @@
 #include <iostream>
 #include <iomanip>
 
+WaitingListManager::WaitingListManager() {
+}
 // Linear lookup of which Entry holds this resource's queue.
 int WaitingListManager::indexOf(const std::string& resourceId) const {
     for (std::size_t i = 0; i < lists.size(); ++i) {
