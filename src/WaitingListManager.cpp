@@ -102,7 +102,7 @@ void WaitingListManager::displayForResource(const std::string& resourceId) const
 
 //old veriosn.
 
-//**bool WaitingListManager::saveToFile(const std::string& filename) const {
+/*bool WaitingListManager::saveToFile(const std::string& filename) const {
     std::ofstream out(filename.c_str());
     if (!out.is_open()) {
         return false;
@@ -118,7 +118,7 @@ void WaitingListManager::displayForResource(const std::string& resourceId) const
         }
     }
     return true;
-}**//
+}*/
 
 //Updated version.
     
