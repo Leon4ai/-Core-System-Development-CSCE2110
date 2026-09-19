@@ -100,7 +100,9 @@ void WaitingListManager::displayForResource(const std::string& resourceId) const
     lists[idx].queue.displayAll();
 }
 
-bool WaitingListManager::saveToFile(const std::string& filename) const {
+//old veriosn.
+
+//**bool WaitingListManager::saveToFile(const std::string& filename) const {
     std::ofstream out(filename.c_str());
     if (!out.is_open()) {
         return false;
@@ -116,6 +118,31 @@ bool WaitingListManager::saveToFile(const std::string& filename) const {
         }
     }
     return true;
+}**//
+
+//Updated version.
+    
+bool WaitingListManager::saveToFile(
+    const std::string& filename
+) const {
+    std::ofstream out(filename.c_str());
+
+    if (!out.is_open()) {
+        return false;
+    }
+
+    for (std::size_t i = 0; i < lists.size(); ++i) {
+        // Copy so saving does not remove real waiting entries.
+        WaitQueue tempQueue = lists[i].queue;
+        WaitRequest request;
+
+        while (tempQueue.dequeue(request)) {
+            out << request.toFileString() << '\n';
+        }
+    }
+
+    out.close();
+    return !out.fail();
 }
 
 bool WaitingListManager::loadFromFile(const std::string& filename) {
