@@ -10,7 +10,7 @@
 | -------------------- | ----------------------------- | ------------------------------------------------------------------- | ------------------------------------------ | -------------------------------------------------------------- |
 | [Member 1 full name] | [Actual components worked on] | [Specific functions, classes, features, or documentation completed] | [Tests performed, results, and bugs fixed] | [Commit hashes or links, branch names, and pull-request links] |
 | [Member 2 full name] | [Actual components worked on] | [Specific functions, classes, features, or documentation completed] | [Tests performed, results, and bugs fixed] | [Commit hashes or links, branch names, and pull-request links] |
-| Roosevelt Ngwatemoh | Resource, Reservation, & Waiting List Management | ResourceManager.h, ResourceManager.cpp, Resource.h, ReservationList.h, WaitQueue.h, WaitRequest.h, WaitingListManager.h and all functions in those classes | Tested resource file parsing, linked list dynamic memory management, and linear search validation. And fixed typo in esourceManager.cpp and ResourceManager.h | [Commit hashes or links, branch names, and pull-request links] |
+| Roosevelt Ngwatemoh | Resource, Reservation, & Waiting List Management | ResourceManager.h, ResourceManager.cpp, Resource.h, ReservationList.h, WaitQueue.h, WaitRequest.h, WaitingListManager.h and all functions in those classes | Tested resource file parsing, linked list dynamic memory management, and linear search validation. And fixed typo in ResourceManager.cpp and ResourceManager.h. Tested FIFO enqueue and dequeue operations, copy constructors for file saving, and waitlist display formatting.| [Commit hashes or links, branch names, and pull-request links] |
 
 ## Individual Contributions
 
