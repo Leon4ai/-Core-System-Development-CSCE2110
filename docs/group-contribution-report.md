@@ -20,7 +20,7 @@
 
 ### [Member 2 full name]
 
-[Name] worked on [specific components/files]. Their completed tasks included [specific functions or features and what those changes accomplished]. They tested [specific scenarios] and resolved [specific bugs, if applicable]. Their documentation or complexity-analysis contributions included [actual work, or state that none was assigned]. Their GitHub contributions are documented in [commit hashes, branch names, and pull-request links]. Their other work on the milestone included [additional actual contributions, if any].
+[Name] worked on WaitRequest.cpp, the renamed WaitQueue files, Resource.cpp, ReservationManger.cpp, the Student class, the CancelStack class, Reservation.h and its methods, the ReservationList CRUD operations, WaitingListManager.cpp, system UI, and search/sorting algorithms. Their completed tasks included implementing CSV serialization for resources, building the core methods for student and reservation objects, developing the LIFO stack for cancellations, setting up the main command-line menu UI, and programming linear search, binary search, and quicksort algorithms. They tested [specific scenarios] and resolved [specific bugs, if applicable]. Their documentation or complexity-analysis contributions included enhancing the project README with project details and instructions. Their GitHub contributions are documented in [commit hashes, branch names, and pull-request links]. Their other work on the milestone included [additional actual contributions, if any].
 
 ### Roosevelt Ngwatemoh
 
