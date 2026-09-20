@@ -162,3 +162,74 @@ Added to cancellation history.
 
 Undo Cancellation
 Reservation Restored Successfully.
+
+## Additional Usage and Implementation Notes
+
+The menu also includes:
+
+10. Remove Waiting Request
+
+This option asks for the student ID, resource ID, and requested date.
+
+View Resources includes a "Check availability by date" option. Resource
+search and the default resource display show availability for today.
+
+There is exactly ONE linked list containing all active reservations
+across the system. Each reservation stores its reservation ID, student
+ID, student name, resource ID, and date. Availability is determined by
+traversing this list for a matching resource ID and date. The same
+resource can therefore have reservations on different dates.
+
+Waiting queues are separate from the active reservation list. Each
+resource has its own queue. When a reservation is cancelled, the first
+waiting request for the freed date is promoted. The relative order of
+all remaining requests is preserved.
+
+The cancellation stack is separate from both active reservations and
+waiting queues. Generate Report displays cancellation history, with
+the most recent cancellation first. Cancellation history exists only
+during the current run; it is not saved between runs.
+
+The Available field in resources.txt is retained for file-format
+compatibility. Actual booking availability is calculated from active
+reservations for the requested date.
+
+Reservation dates must be valid calendar dates in YYYY-MM-DD format.
+A blank date during reservation creation uses today's date. The sample
+session above is abbreviated and assumes initially empty reservation
+and waiting files, a blank date entry, and no waiting students.
+
+The efficiency table uses:
+
+* N: number of active reservations.
+* R: number of resources.
+* W: total number of waiting requests.
+* Q: number of waiting requests for the selected resource.
+* K: number of stored resource-queue entries, treated as at least 1
+  when expressing complexity bounds.
+* H: number of cancelled reservations currently on the stack.
+
+Queue enqueue/dequeue and stack push/pop are O(1) primitive operations.
+Complete system operations can take longer because they also perform
+resource searches, reservation scans, queue lookup, or queue copying.
+See docs/complexity-analysis.md for the complete analysis.
+
+The project also contains tests/test_system.py. From the project root,
+run the included checks with:
+
+```
+python3 tests/test_system.py
+```
+
+The test script builds the program using make and runs its scenarios
+in temporary directories.
+
+Before submission, build and run the project on a UNT CSE CELL machine
+from the directory containing Makefile and data/:
+
+```
+make clean
+make
+./campus_reservations
+```
+
