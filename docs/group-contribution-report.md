@@ -14,7 +14,7 @@
 
 ## Individual Contributions
 
-### Abdullah Zaigham (Leon4AI) Tom Zhang(iceflamearrow-lab)
+### Abdullah Zaigham (Leon4AI) 
 
 [Name] worked on [specific components/files]. Their completed tasks included [specific functions or features and what those changes accomplished]. They tested [specific scenarios] and resolved [specific bugs, if applicable]. Their documentation or complexity-analysis contributions included [actual work, or state that none was assigned]. Their GitHub contributions are documented in [commit hashes, branch names, and pull-request links]. Their other work on the milestone included [additional actual contributions, if any].
 
