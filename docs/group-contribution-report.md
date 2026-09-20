@@ -24,7 +24,7 @@
 
 ### [Member 3 full name]
 
-[Name] worked on [specific components/files]. Their completed tasks included [specific functions or features and what those changes accomplished]. They tested [specific scenarios] and resolved [specific bugs, if applicable]. Their documentation or complexity-analysis contributions included [actual work, or state that none was assigned]. Their GitHub contributions are documented in [commit hashes, branch names, and pull-request links]. Their other work on the milestone included [additional actual contributions, if any].
+Roosevelt Ngwatemoh worked on WaitingListManager.h, WaitRequest.h, WaitQueue.h, ResourceManager.h, Resource.h, ReservationList.h, and ResourceManager.cpp. Their completed tasks included building a custom singly linked list for active reservations, designing a custom FIFO queue for waitlists, and developing the central resource manager to handle file input/output, formatted data display, and linear search validation. They tested custom data structure operations and file loading sequences, and resolved a typo within the ResourceManager implementation and header files. Their documentation included the comments on their assigned classes. Their GitHub contributions are documented in [insert commit hashes, branch names, and pull-request links].
 
 ## Collaboration Evidence
 
