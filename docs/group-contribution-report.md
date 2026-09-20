@@ -2,7 +2,7 @@
 
 **Project:** Campus Resource Reservation System
 **Team members:** Roosevelt Ngwatemoh,Abdullah Zaigham, Tom Zhang 
-**GitHub repository:** [ACTUAL REPOSITORY URL]
+**GitHub repository:** https://github.com/Leon4ai/-Core-System-Development-CSCE2110
 
 ## Contribution Summary
 
