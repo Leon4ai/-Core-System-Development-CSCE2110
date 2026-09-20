@@ -30,6 +30,6 @@ Roosevelt Ngwatemoh worked on WaitingListManager.h, WaitRequest.h, WaitQueue.h, 
 
 * Team members’ GitHub usernames: Leon4AI(Abdullah Zaigham) , iceflamearrow-lab(Tom Zhang), Roosevelt Ngwatemoh(rooseveltngwatemoh)
 * Merged pull request: [PULL-REQUEST URL]
-* Confirmation that the submitted source, headers, and README match the repository: [VERIFIED BY WHOM AND WHEN]
+* Confirmation that the submitted source, headers, and README match the repository: Tom Zhang and Abdullah Zaigham
 
 
