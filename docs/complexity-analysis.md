@@ -2,9 +2,9 @@
 
 ## Scope and Notation
 
-This report analyzes the current Campus Resource Reservation System implementation. It distinguishes individual data-structure operations from complete operations performed by ReservationManager.
+This report is an analysis of the existing Campus Resource Reservation System implementation. It separates operations on the individual data-structures from the full operations of ReservationManager.
 
-The following symbols are used:
+Symbols used:
 
 | Symbol | Meaning                                                                               |
 | ------ | ------------------------------------------------------------------------------------- |
@@ -12,102 +12,102 @@ The following symbols are used:
 | R      | Number of resources                                                                   |
 | W      | Total waiting requests across all resource queues                                     |
 | Q      | Waiting requests in the selected resource's queue                                     |
-| K      | Number of stored resource-queue entries, treated as at least 1 in complexity formulas |
+K >= 1 (in complexity formulas) | Number of stored resource-queue entries |
 | H      | Number of cancelled reservations on the history stack                                 |
 
-Stored queue entries can remain after their queues become empty, so K counts stored entries rather than only nonempty queues.
+Queues may become empty while still having stored elements in their queues, so K counts stored elements and not only the empty queues.
 
-Unless otherwise stated, bounds describe worst-case time. String lengths are treated as bounded. If field lengths grow, string copying, comparison, and output also contribute to the running time.
+Unless otherwise indicated, bounds refer to worst case time. String lengths are considered to be bounded. The running time also increases as the length of the fields increases, because of copying, comparison and output of strings.
 
 ## 1. Active Reservation Linked List
 
-The system uses one singly linked list for all active reservations. It stores a head pointer but does not maintain a tail pointer.
+The system has a single linked list of all the active reservations. It keeps track of a head pointer, but not a tail pointer.
 
 ### Insertion: O(N) time
 
-ReservationList::insert traverses the list to locate the final node before appending the new reservation. Therefore, insertion into a nonempty list takes O(N) time. Inserting into an empty list takes O(1).
+The function ReservationList::insert searches the list to find the last node to insert the new reservation into. Thus, the insertion into a nonempty list is O(n). O(1) for inserting into an empty list.
 
-Each insertion allocates one node and uses O(1) additional space.
+One node is allocated on each insertion, and space is used is O(1).
 
 ### Removal by ID: O(N) time
 
-ReservationList::removeById searches sequentially for the requested reservation. Once found, it reconnects the surrounding pointers and deletes the node.
+ReservationList::removeById will search sequentially for the reservation to be removed. This will connect the surrounding pointers when it is located and remove the node.
 
-The search takes O(N) time in the worst case. Pointer updates and deletion take O(1). Auxiliary space is O(1).
+In the worst case, the search has time complexity of O(N). Pointer update and deletion is O(1). The auxiliary space is O(1).
 
-### Search and Conflict Checking: O(N) time
+This method takes O(N) time to search for conflicts.Searching for conflicts in this method takes O(N) time.
 
-Finding a reservation by ID, finding reservations for a student, and checking for a resource/date conflict each require a sequential traversal.
+Sequential traversal is needed to find a reservation by ID, to find reservations for a student, and to check for a resource/date conflict.
 
-The list-level search functions use O(1) auxiliary space apart from any caller-provided results storage. The manager's student-search operation allocates a results vector of size N, giving that complete operation O(N) auxiliary space.
+The list-level search functions requires O(1) extra space besides any storage provided by the caller on their part. The student-search operation of the manager uses N auxiliary space because it returns a results vector of size N.
 
-### Traversal and Display: O(N) time
+To traverse and display, it takes O(N) time.It takes O(N) time to traverse and display.
 
-Displaying or writing all active reservations visits each node once. Auxiliary space is O(1).
+This view or writing of all active reservations traverses each node exactly once. The auxiliary space is O(1).
 
 ## 2. Complete Reservation Creation
 
 ### Time: O(N + R + W + K(Q + 1))
 
-ReservationManager::createReservation performs more work than list insertion alone:
+ReservationManager::createReservation does more than just list insertion:
 
-1. It validates the request and searches the resource vector: O(R).
-2. It allocates a reservation-results vector and checks the student's active reservations: O(N).
-3. It checks for duplicate waiting requests.
-4. It searches for an active resource/date conflict: O(R + N), including resource validation.
-5. It either appends an active reservation or adds a waiting request.
+It validates the request and searches the resource vector: O(R).
+It sets up a reservation-results vector and queries the student's active reservations: O(N).
+3. Verifies duplicate waiting requests.
+4) Looks for an active resource/date conflict: O(R + N) - with resource validation.
+Either it adds a reservation to the end or it makes a waiting request.
 
-The duplicate-waiting check copies the entire WaitingListManager, including its queues. This requires O(W + K) time and space.
+The duplicate-waiting check is a copy of the full WaitingListManager, which contains its queues. O(W + K) time and space are required.
 
-It then dequeues up to Q requests from the copied target queue. Each manager-level dequeue performs a linear search through the stored queue entries, costing O(K). Including the final unsuccessful lookup, this contributes O(K(Q + 1)) time.
+Then it retrieves up to Q requests from the duplicated target queue. A linear search is made at the manager level through the stored queue entries, which takes O(K) where K is the number of entries in the queue. This takes O(K(Q + 1)) time, including the last failed lookup.
 
-Appending an active reservation takes O(N), and updating the resource's usage count requires another O(R) resource lookup.
+Adding and updating resource usage count are both O(N) and O(R) operations, respectively.
 
-Creating a new resource-queue entry can also cause the vector to reallocate and copy existing queues. Its worst-case cost is covered by the W and K terms above.
+Another resource-queue entry can be created, which may cause the vector to reallocate and duplicate existing queues. The worst case scenario is dealt with by the following two terms, W and K.
 
 ### Auxiliary Space: O(N + W + K)
 
-The temporary reservation-results vector requires O(N) space, and the copied waiting-list manager requires O(W + K).
+The temporary reservation-results vector takes O(N) space, and the copy of the waiting-list manager takes O(W + K) space.
 
-## 3. Waiting Queue Operations and Processing
+## 3. Determine the time to wait in a waiting queue and the processing time.
 
 ### Queue Primitives: O(1) time
 
-WaitQueue maintains front and rear pointers.
+WaitQueue has front and rear pointers.
 
-* enqueue attaches a node at the rear.
-* dequeue removes the front node.
-* peek reads the front node.
+enqueue puts a node on the end.
+Remove the front node from the queue: dequeue.
+peek reads the front node (last to be added).
 
-Each operation takes O(1) time and O(1) auxiliary space. Enqueue adds one stored node.
+The running time and auxiliary space of each of the operations is O(1). The node is added to the queue by the enqueue operation.
 
-### Manager-Level Queue Access: O(K) time
+Access to queues is performed in an O(K) time.Access to queues is done in O(K) time.
 
-WaitingListManager stores resource queues in a vector. Its indexOf function searches that vector linearly.
+Queues of resources are kept in the WaitingListManager using a vector. That vector is linearly searched by its indexOf function.
 
-Therefore, enqueue into an existing queue, dequeue, peek, and size lookup take O(K) at the manager level, even though the underlying queue operation is O(1).
+Hence, the manager-level enqueue, dequeue, peek or size lookup are all O(K).
 
-Adding a previously unseen resource queue can require O(W + K) time in the worst case if vector reallocation copies existing queues.
+If the vector is reallocated to add the new resource queue, this can take O(W + K) time in the worst case.
 
-### Processing Waiters After Cancellation: O(N + R + K(Q + 1)) time
+Since the waiters are being processed after cancelation, the complexity of the processing becomes O(N + R + K(Q + 1)).
 
 ReservationManager::promote processes exactly the queue's original Q requests.
 
-For each request, it performs a manager-level dequeue and, unless promoted, a manager-level enqueue. Each lookup costs O(K). The first request matching the freed date is promoted, while all remaining requests retain their relative order.
+It does a manager level dequeue and, unless promoted, it does a manager level enqueue for each request. The cost of each look-up is O(K). All requests are queued and the first one that matches the freed date is promoted, the rest being kept in their relative order.
 
-Promotion also appends a reservation to the active list in O(N) time and finds the resource to update its usage count in O(R).
+Promotion also adds a reservation to the active list in O(N) time and determines which resource it is to change its usage count in O(R).
 
-The complete bound is O(N + R + K(Q + 1)). Auxiliary space is O(1), excluding the stored reservation node created by promotion.
+The complete bound is O(N + R + K(Q + 1)). The number of auxiliary spaces is O(1) (excluding the reservation node stored as a result of promotion).
 
-### Removing a Waiting Request: O(K(Q + 1)) time
+To remove a waiting request can take O(Q + 1) time.Deleting a waiting request takes O(Q + 1) time.
 
-ReservationManager::removeWaiting processes the original queue length, removes the matching request, and re-enqueues the others in their original relative order.
+ReservationManager::removeWaiting acts on the original length of the queue, deletes the matching queue element and restores the remaining elements in the original relative order.
 
-It uses O(1) auxiliary space.
+Uses O(1) aux space.
 
-### Displaying Waiting Lists: O(K + W) time
+Displaying waiting lists is a O(K + W) time operation.The operation of displaying waiting lists takes O(K + W) time.
 
-Displaying all waiting lists visits the stored queue entries and their waiting requests. Auxiliary space is O(1).
+Shows all the waiting lists stored in the queue and the waiting requests for them. The auxiliary space required is O(1).
 
 ## 4. Complete Reservation Cancellation
 
@@ -115,102 +115,102 @@ Displaying all waiting lists visits the stored queue entries and their waiting r
 
 ReservationManager::cancelReservation:
 
-1. Finds the reservation by ID: O(N).
-2. Pushes it onto the cancellation stack: O(1).
-3. Removes it from the active list: O(N).
-4. Processes waiting requests for the freed resource/date: O(N + R + K(Q + 1)).
+2. Computes the value of the function at a given point x: O(1)
+2. Places it on the cancellation stack: O(1).
+3. Takes it out of the list of active items: O(N).
+4. Queues requests for the freed resource/date: O(N + R + K(Q + 1)).
 
 Adding these costs gives O(N + R + K(Q + 1)).
 
-Auxiliary space is O(1), excluding newly stored nodes.
+Auxiliary space is O(1) (excluding nodes being added).
 
-## 5. Cancellation Stack and Undo
+## 5. Can cancel out and undo operations.
 
-### Stack Primitives: O(1) time
+The time is O(1).Time is constant, O(1).
 
-CancelStack maintains a pointer to the top node.
+The pointer points to the top node in CancelStack.
 
 * push inserts at the top.
-* pop removes the top.
+To remove the top, use pop.
 * peek reads the top.
 
-Each operation takes O(1) time. A push allocates one node.
+All operations will run in O(1) time. One node is allocated by a push.
 
 ### Complete Undo: O(R + N) time
 
-ReservationManager::undoCancellation first peeks at the latest cancelled reservation in O(1).
+The doUndoCancellation method in ReservationManager makes an O(1) initial call to the latest cancelled reservation.
 
-It then verifies the resource and checks the active linked list for a conflict. These checks take O(R + N).
+It then checks if the resource is verified and if there is any conflict in the active linked list. The checks are O(R + N).
 
-If the resource/date is free, it appends the reservation to the active linked list in O(N) and pops the stack in O(1).
+If the resource/date available, it adds the resource to the active linked list in O(N) time and removes the stack in O(1) time.
 
-Therefore, successful undo takes O(R + N) time and O(1) auxiliary space, excluding the restored node. An empty-stack undo takes O(1).
+So the time required for successful undo is O(R + N) and space used during undo is O(1) (excluding the restored node). The time complexity of undoing an empty stack is O(1).
 
-If a conflict exists, the latest cancellation remains on the stack. The program does not skip it or move it to a waiting queue.
+In the event of a conflict, the newest cancelation will stay on the stack. It is not skipped or placed in a waiting queue by the program.
 
-### Displaying Cancellation History: O(H) time
+The Cancellation History procedure executes in O(H) time.The Cancellation History procedure runs in linear time O(H).
 
-Displaying the history visits each stack node once, from newest to oldest. Auxiliary space is O(1).
+History prints each stack node exactly once; in reverse order. The auxiliary space required is O(1).
 
-## 6. Resource Search, Availability, and Sorting
+## 6. The process of searching, locating, and organizing resources.
 
-### Resource Lookup: O(R) time
+Searching a set of resources within O(R) time.Searching a set of resources in O(R) time.
 
-Linear resource lookup scans the resource vector.
+Linear resource lookup: Scans resource vector.
 
-The binary-search function takes O(log R) time when its input is already sorted by ID. However, the current menu resource-search operation uses linear search.
+If the function is called with a sorted (by ID) input, its runtime is O(log R). The menu resource-search operation is currently performed using linear search, however.
 
-### Resource Search Including Availability: O(R + N) time
+The time required for Resource Search is O(R + N) time.The time taken for ResourceSearch is O(R + N) time.
 
-ReservationManager::searchResourceById finds the resource and calculates its availability for today. Availability checking includes an active-reservation scan, producing an overall O(R + N) bound.
+ReservationManager::searchResourceById gets the resource and computes its availability for today. Availability checking is performed by active-reservation scan and hence gives an overall bound of O(R + N).
 
-### Displaying Availability for All Resources: O(R² + RN) time
+To display the availability for all resources takes O(R² + RN) time.Displaying the availability for all resources takes O(R² + RN) time.
 
 For each of R resources, displayAvailability calls isAvailable.
 
-Each call searches the resource vector in O(R) and checks the reservation list in O(N). Repeating this for all resources gives O(R(R + N)), or O(R² + RN).
+Time to search the resource vector is O(R), then a check of the reservation list is O(N) for each call. Doing this for every resource will result in O(R(R + N)), or O(R² + RN).
 
 ### Quick Sort
 
-The Quick Sort algorithm has:
+Quick Sort algorithm has:
 
-* Average time: O(R log R).
+The average time is O(R log R).
 * Worst-case time: O(R²).
-* Average recursion space: O(log R).
-* Worst-case recursion space: O(R).
+Average space used for recursion: O(log R).
+* Worst case running time: O(log n).
 
-The implementation uses the last element as the pivot. Sorted inputs or many equal keys can produce unbalanced partitions.
+The implementation is based on the pivot being the last element. Unbalanced partitions are possible with sorted inputs or with many equal keys.
 
-The complete menu sorting operation also recalculates availability before sorting and displays availability afterward. Including these steps, its worst-case time is O(R² + RN).
+The full menu sort also calculates the availability before sorting and shows availability after sorting. With these steps, its worst case time is O(R² + RN).
 
-## 7. Report Generation and Saving
+## 7. Create and Save Reports
 
 ### Generate Report: O(R² + RN + N + W + K + H) time
 
-generateReport displays resource availability, active reservations, waiting lists, and cancellation history.
+generateReport shows resource availability, active reservations, waiting lists and cancellations.
 
-Resource availability contributes O(R² + RN). Traversing the remaining structures contributes O(N + W + K + H).
+O(R² + RN) is for resource availability. Walking through the rest of the structures adds O(N + W + K + H).Walking through the rest of the structures adds O(N + W + K + H).
 
-The current report does not perform selection sort or rank resources by usage.
+This report does not sort or rank resources by usage, nor does it use selection sort.
 
 ### Save Files: O(R + N + K + W) time
 
-Saving writes every resource, active reservation, and waiting request.
+Saving saves all resources, reservations and waiting requests.
 
-Waiting queues are copied one at a time so that saving does not remove their original entries. If the largest queue contains Qmax requests, peak auxiliary space is O(Qmax).
+When waiting queues are saved, they are saved one at a time, without losing the contents of the original queues. The worst case is O(Qmax) when the biggest queue is populated with Qmax requests.
 
-Cancellation history is not saved between runs.
+Cancellation history will not be stored between runs.
 
 ## 8. Overall Storage
 
-Persistent in-memory storage is O(R + N + W + K + H):
+Persistent in-memory storage: O(R + N + W + K + H):
 
 * Resource vector: O(R).
-* Active reservation linked list: O(N).
-* Waiting-list entries and queue nodes: O(K + W).
+O(N) - Active reservation linked list.
+Waiting-list entries and queue nodes: O(K + W).
 * Cancellation stack: O(H).
 
-Reservation creation temporarily uses O(N + W + K) additional space. Other operations have the auxiliary-space costs described above.
+Creating the reservations requires N + W + K extra space to be used temporarily. The other operations have the following auxiliary-space costs.
 
 ## Required Operations Summary
 
@@ -219,11 +219,11 @@ Reservation creation temporarily uses O(N + W + K) additional space. Other opera
 | Insert into active linked list                     | O(N) time                    |
 | Complete reservation creation                      | O(N + R + W + K(Q + 1)) time |
 | Remove from active list by ID                      | O(N) time                    |
-| Complete cancellation with waiting-list processing | O(N + R + K(Q + 1)) time     |
+Waiting-list processing: Cancel all the blocks (O(N + R + K(Q + 1) time)
 | Enqueue/dequeue within one queue                   | O(1) time                    |
 | Process waiting list after cancellation            | O(N + R + K(Q + 1)) time     |
 | Remove a selected waiting request                  | O(K(Q + 1)) time             |
 | Stack push/pop                                     | O(1) time                    |
 | Complete undo cancellation                         | O(R + N) time                |
 
-These bounds describe the current implementation, including its searches, copies, and traversals.
+These bounds outline the current implementation which encompasses searching, copying and traversing.
