@@ -1,7 +1,7 @@
 # Group Contribution Report — Milestone 1
 
 **Project:** Campus Resource Reservation System
-**Team members:** [FULL NAMES OF ALL MEMBERS]
+**Team members:** Roosevelt Ngwatemoh, 
 **GitHub repository:** [ACTUAL REPOSITORY URL]
 
 ## Contribution Summary
